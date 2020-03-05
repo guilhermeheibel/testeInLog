@@ -22,6 +22,5 @@ namespace MovieTestInLog.Models
         public string DataLancamento { get { return "Lançamento: " + release_date.ToString("dd/MM/yyyy"); } }
         public string overview { get; set; }
         public DateTime release_date { get; set; }
-
     }
 }

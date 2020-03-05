@@ -21,9 +21,8 @@
         </Frame>
         <CollectionView x:Name="ItemsListView"
                         ItemsSource="{Binding ItemsMovie}"
-                        VerticalOptions="FillAndExpand"
-                        
-                        >
+                        VerticalOptions="FillAndExpand">
+            
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Horizontal" Span="2"/>
             </CollectionView.ItemsLayout>
@@ -32,39 +31,40 @@
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-
-                    <StackLayout Spacing="0" 
+                    <Grid>
+                        <StackLayout Spacing="0" 
                                      Orientation="Vertical" 
                                      HorizontalOptions="FillAndExpand" 
                                      VerticalOptions="FillAndExpand"
                                  HeightRequest="200">
 
-                        <ffimageloading:CachedImage DownsampleToViewSize="False"
+                            <ffimageloading:CachedImage DownsampleToViewSize="False"
                                                     BackgroundColor="Black"
                                                         Source="{Binding poster_path}"
                                                         HorizontalOptions="FillAndExpand"
                                                         VerticalOptions="FillAndExpand"
                                                         Margin="0"/>
-                        <StackLayout Spacing="0" 
+                            <StackLayout Spacing="0" 
                                      VerticalOptions="Start" 
                                      HorizontalOptions="Center"
                                      WidthRequest="150"
                                      Margin="15">
-                            <Label Text="{Binding title}" 
+                                <Label Text="{Binding title}" 
                                    LineBreakMode="TailTruncation" 
                                    TextColor="Black"
                                    Style="{DynamicResource ListItemTextStyle}" 
                                    FontSize="17" />
-                            <Label Text="{Binding Pontuacao}" 
+                                <Label Text="{Binding Pontuacao}" 
                                         LineBreakMode="NoWrap" 
                                         Style="{DynamicResource ListItemTextStyle}" 
                                         FontSize="13" />
-                            <Label Text="{Binding DataLancamento}" 
+                                <Label Text="{Binding DataLancamento}" 
                                         LineBreakMode="NoWrap" 
                                         Style="{DynamicResource ListItemTextStyle}" 
                                         FontSize="13" />
+                            </StackLayout>
                         </StackLayout>
-                    </StackLayout>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

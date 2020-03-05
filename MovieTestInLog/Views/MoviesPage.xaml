@@ -59,9 +59,7 @@
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <controls:ListViewMainControl.Behaviors>
-                <extended:InfiniteScrollBehavior IsLoadingMore="{Binding IsBusy}" />
-            </controls:ListViewMainControl.Behaviors>
+           
             <controls:ListViewMainControl.Footer>
                 <Grid Padding="6" IsVisible="{Binding IsBusy}">
                     <Grid.Triggers>
@@ -74,6 +72,9 @@
                                        HorizontalOptions="Center"/>
                 </Grid>
             </controls:ListViewMainControl.Footer>
+            <controls:ListViewMainControl.Behaviors>
+                <extended:InfiniteScrollBehavior IsLoadingMore="{Binding IsBusy}" />
+            </controls:ListViewMainControl.Behaviors>
         </controls:ListViewMainControl>
     </StackLayout>
 </base:BasePage>
