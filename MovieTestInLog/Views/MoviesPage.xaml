@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 mc:Ignorable="d"
+                 xmlns:base="clr-namespace:MovieTestInLog.Views;assembly=MovieTestInLog"
+                 x:Class="MovieTestInLog.Views.MoviesPage"
+                 xmlns:controls="clr-namespace:MovieTestInLog.UI.Controls"
+                 xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+                 xmlns:extended="clr-namespace:Xamarin.Forms.Extended;assembly=Xamarin.Forms.Extended.InfiniteScrolling"
+                 Title="{Binding Title}">
+    <StackLayout>
+        <Frame BackgroundColor="#252525">
+            <Frame BackgroundColor="#FFFFFF" CornerRadius="25" Padding="0">
+                <StackLayout Orientation="Horizontal" Spacing="0">
+                    <Entry Text="{Binding SearchText}" PlaceholderColor="#D5D5D5" Placeholder="Procurar filme..." HorizontalOptions="FillAndExpand" Margin="5,0" />
+                    <Image Source="ic_launcher.png" WidthRequest="27" HorizontalOptions="End"/>
+                </StackLayout>
+            </Frame>
+        </Frame>
+        <controls:ListViewMainControl x:Name="ItemsListView"
+                                        ItemsSource="{Binding ItemsMovie}"
+                                        ItemTappedCommand="{Binding ShowMovieDetailCommand}"
+                                        VerticalOptions="FillAndExpand"
+                                        SeparatorColor="Black"
+                                        SeparatorVisibility="Default"
+                                        HasUnevenRows="true"
+                                        >
+           
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Spacing="0" Orientation="Horizontal" HorizontalOptions="Start">
+                            <ffimageloading:CachedImage DownsampleToViewSize="False"
+                                                        Source="{Binding poster_path}"
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Start"
+                                                         HeightRequest="100"
+                                                        Margin="15"/>
+                            <StackLayout Spacing="0" 
+                                         VerticalOptions="Center" 
+                                         Margin="0,0,15,0">
+                                <Label Text="{Binding title}" 
+                                        LineBreakMode="WordWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="17" />
+                                <Label Text="{Binding vote_average}" 
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="13" />
+                                <Label Text="{Binding release_date}" 
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="13" />
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <controls:ListViewMainControl.Behaviors>
+                <extended:InfiniteScrollBehavior IsLoadingMore="{Binding IsBusy}" />
+            </controls:ListViewMainControl.Behaviors>
+            <controls:ListViewMainControl.Footer>
+                <Grid Padding="6" IsVisible="{Binding IsBusy}">
+                    <Grid.Triggers>
+                        <Trigger TargetType="Grid" Property="IsVisible" Value="False">
+                            <Setter Property="HeightRequest" Value="0" />
+                        </Trigger>
+                    </Grid.Triggers>
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
+                                       Color="#2196F3" VerticalOptions="Center" 
+                                       HorizontalOptions="Center"/>
+                </Grid>
+            </controls:ListViewMainControl.Footer>
+        </controls:ListViewMainControl>
+    </StackLayout>
+</base:BasePage>
