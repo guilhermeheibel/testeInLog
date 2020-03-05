@@ -63,14 +63,14 @@ namespace MovieTestInLog.Services
 
 
         }
-        public async Task<IEnumerable<MoviesModel>> GetSearchMovieAsync(string searchText, string page)
+        public async Task<MovieSearchModel> GetSearchMovieAsync(string searchText, string page)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{Constants.ApplicationURL}search/movie?api_key={Constants.ApiKey}&language=pt-BR&page={page}&query={searchText}");
             var response = await client.SendAsync(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var responseData = await response.Content.ReadAsStringAsync();
-                return JObject.Parse(responseData)?.ToObject<IEnumerable<MoviesModel>>();
+                return JObject.Parse(responseData)?.ToObject<MovieSearchModel>();
 
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)

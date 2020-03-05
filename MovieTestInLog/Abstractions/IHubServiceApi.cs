@@ -10,6 +10,6 @@ namespace MovieTestInLog.Abstractions
     {
         Task<IEnumerable<MoviesModel>> GetMoviesAsync(int SelectedPage);
         Task<MoviesDetailModel> GetMoviesDetailAsync(int movie_id);
-        Task<IEnumerable<MoviesModel>> GetSearchMovieAsync(string searchText, string page);
-    } 
+        Task<MovieSearchModel> GetSearchMovieAsync(string searchText, string page);
+    }
 }
