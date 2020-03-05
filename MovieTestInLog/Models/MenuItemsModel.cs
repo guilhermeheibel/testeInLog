@@ -6,13 +6,14 @@ namespace MovieTestInLog.Models
 {
     public class MenuItemsModel
     {
-        public MenuItemsModel(string itemName, string itemIcon, string itemDescription, string itemBackgroudColor, string itemTextColor)
+        public MenuItemsModel(string itemName, string itemIcon, string itemDescription, string itemBackgroudColor, string itemTextColor, Type itemPage)
         {
             ItemName = itemName;
             ItemIcon = itemIcon;
             ItemDescription = itemDescription;
             ItemBackgroudColor = itemBackgroudColor;
             ItemTextColor = itemTextColor;
+            ItemPage = itemPage;
         }
         public MenuItemsModel()
         {
@@ -23,5 +24,7 @@ namespace MovieTestInLog.Models
         public string ItemDescription { get; set; }
         public string ItemBackgroudColor { get; set; }
         public string ItemTextColor { get; set; }
+        public Type ItemPage { get; set; }
+       
     }
 }

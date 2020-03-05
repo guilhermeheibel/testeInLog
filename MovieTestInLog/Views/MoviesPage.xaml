@@ -44,12 +44,13 @@
                                 <Label Text="{Binding title}" 
                                         LineBreakMode="WordWrap" 
                                         Style="{DynamicResource ListItemTextStyle}" 
+                                       TextColor="Black"
                                         FontSize="17" />
-                                <Label Text="{Binding vote_average}" 
+                                <Label Text="{Binding Pontuacao}" 
                                         LineBreakMode="NoWrap" 
                                         Style="{DynamicResource ListItemTextStyle}" 
                                         FontSize="13" />
-                                <Label Text="{Binding release_date}" 
+                                <Label Text="{Binding DataLancamento}" 
                                         LineBreakMode="NoWrap" 
                                         Style="{DynamicResource ListItemTextStyle}" 
                                         FontSize="13" />

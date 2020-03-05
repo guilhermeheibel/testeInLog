@@ -7,12 +7,13 @@ using Xamarin.Forms.Extended;
 
 namespace MovieTestInLog.ViewModels
 {
-    public class MoviesViewModel : BaseViewModel
+
+    public class CarrouselMoviesViewModel : BaseViewModel
     {
         public InfiniteScrollCollection<MoviesModel> ItemsMovie { get; }
         private int CountPages = 1;
         public ICommand ShowMovieDetailCommand { get; }
-        public MoviesViewModel()
+        public CarrouselMoviesViewModel()
         {
             Title = "Movies List";
             ItemsMovie = new InfiniteScrollCollection<MoviesModel>();
@@ -36,12 +37,10 @@ namespace MovieTestInLog.ViewModels
                 }
             };
         }
-
         private async Task ExecuteMovieDetail(MoviesModel movieSelected)
         {
             await PushAsync<MoviesDetailViewModel>(movieSelected);
         }
-
         public override async Task LoadAsync()
         {
 
@@ -51,7 +50,6 @@ namespace MovieTestInLog.ViewModels
             foreach (var itemMovie in moviesList)
             {
                 itemMovie.poster_path = PathMoviesImage.PathConverter(itemMovie.id.ToString(), itemMovie.poster_path);
-
                 ItemsMovie.Add(itemMovie);
             }
             OnPropertyChanged(nameof(ItemsMovie));
@@ -106,6 +104,5 @@ namespace MovieTestInLog.ViewModels
             }
             OnPropertyChanged(nameof(ItemsMovie));
         }
-
     }
 }

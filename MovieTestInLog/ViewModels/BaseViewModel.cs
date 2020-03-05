@@ -86,8 +86,30 @@ namespace MovieTestInLog.ViewModels
                await masterMain.Detail.Navigation.PushAsync(page);
             }
         }
+        public async Task PushAsync<TViewModel>(Type t, params object[] args) where TViewModel : Page
+        {
+            var viewPageType = t;
+            var viewPageTypeName = viewPageType.Name;
+            var viewPageWordLength = "Page".Length;
+            var viewTypeName = $"MovieTestInLog.ViewModels.{viewPageTypeName.Substring(0, viewPageTypeName.Length - viewPageWordLength)}ViewModel";
+            var viewType = Type.GetType(viewTypeName);
+
+             var page = Activator.CreateInstance(t) as Page;
+
+            if (Activator.CreateInstance(viewType, args) is BaseViewModel viewModel)
+            {
+                page.BindingContext = viewModel;
+            }
+
+            if (Application.Current.MainPage is MasterDetailPage master)
+            {
+                await master.Detail.Navigation.PushAsync(page, false);
+            }
+        }
+
+
         #region INotifyPropertyChanged
-       
-         #endregion
+
+        #endregion
     }
 }

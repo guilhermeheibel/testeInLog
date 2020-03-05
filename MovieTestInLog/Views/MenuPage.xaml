@@ -4,23 +4,27 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+              xmlns:controls="clr-namespace:MovieTestInLog.UI.Controls"
              x:Class="MovieTestInLog.Views.MenuPage"
              Title="Menu">
              
     <StackLayout VerticalOptions="FillAndExpand">
-        <ListView ItemsSource="{Binding menu}"
-                    HasUnevenRows="True">
+        <controls:ListViewMainControl  ItemsSource="{Binding menu}"
+                                       ItemTappedCommand="{Binding ShowPagesMenuSelected}"
+                  HasUnevenRows="True"
+                  SeparatorVisibility="None"
+                  BackgroundColor="#252525">
             
-            <ListView.ItemTemplate>
+            <controls:ListViewMainControl.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding ItemName}" FontSize="20"/>
+                        <StackLayout Padding="10" BackgroundColor="{Binding ItemBackgroudColor}">
+                            <Label Text="{Binding ItemName}" FontSize="20" TextColor="{Binding ItemTextColor}"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </controls:ListViewMainControl.ItemTemplate>
+        </controls:ListViewMainControl>
     </StackLayout>
 
 </ContentPage>
