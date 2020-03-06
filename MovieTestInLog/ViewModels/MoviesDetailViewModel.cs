@@ -21,7 +21,11 @@ namespace MovieTestInLog.ViewModels
         {
             IsBusy = true;
             MovieDetail = await HubService.GetMoviesDetailAsync(SelectedMovieDetail.id);
-
+            if (MovieDetail == null)
+            {
+                await Navigation.PopToRootAsync();
+                return;
+            }
             MovieDetail.backdrop_path = PathMoviesImage.PathConverter(SelectedMovieDetail.id.ToString(), MovieDetail.backdrop_path);
             if (MovieDetail != null && MovieDetail.genres != null)
             {
