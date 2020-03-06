@@ -22,24 +22,33 @@ namespace MovieTestInLog.ViewModels
             {
                 OnLoadMore = async () =>
                 {
-                    IsBusy = true;
-                    if (!string.IsNullOrEmpty(SearchText)) return null;
-                    CountPages++;
-                    var moviesList = await HubService.GetMoviesAsync(CountPages);
-
-                    if (moviesList == null) return new InfiniteScrollCollection<MoviesModel>();
-                    foreach (var itemMovie in moviesList)
+                    if (await StatusConnections.VerifyConnect())
                     {
-                        itemMovie.poster_path = PathMoviesImage.PathConverter(itemMovie.id.ToString(), itemMovie.poster_path);
 
-                        ItemsMovie.Add(itemMovie);
+
+
+                        IsBusy = true;
+                        if (!string.IsNullOrEmpty(SearchText)) return null;
+                        CountPages++;
+                        var moviesList = await HubService.GetMoviesAsync(CountPages);
+
+                        if (moviesList == null) return new InfiniteScrollCollection<MoviesModel>();
+                        foreach (var itemMovie in moviesList)
+                        {
+                            itemMovie.poster_path = PathMoviesImage.PathConverter(itemMovie.id.ToString(), itemMovie.poster_path);
+
+                            ItemsMovie.Add(itemMovie);
+                        }
+                        IsBusy = false;
+                        return moviesList;
                     }
-                    IsBusy = false;
-                    return moviesList;
+                    else { IsBusy = false; return null; };
+
+
                 }
-            };
+            }; IsBusy = false;
         }
-        
+
         private async Task ExecuteMovieDetail(MoviesModel movieSelected)
         {
             await PushAsync<MoviesDetailViewModel>(movieSelected);
@@ -47,17 +56,22 @@ namespace MovieTestInLog.ViewModels
 
         public override async Task LoadAsync()
         {
+            SearchText = null;
             SearchInit = true;
+
             IsBusy = true;
             ItemsMovie.Clear();
-            if (!await StatusConnections.VerifyConnect()) {
-                
-                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." } );
+            if (!await StatusConnections.VerifyConnect())
+            {
+
+                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." });
+                IsBusy = false;
                 return;
             }
             ItemsMovie.Clear();
-            var moviesList = await HubService.GetMoviesAsync(1);
-            if (moviesList == null) return;
+            CountPages = 1;
+            var moviesList = await HubService.GetMoviesAsync(CountPages);
+            if (moviesList == null) { IsBusy = false; return; }
             foreach (var itemMovie in moviesList)
             {
                 itemMovie.poster_path = PathMoviesImage.PathConverter(itemMovie.id.ToString(), itemMovie.poster_path);
@@ -75,20 +89,18 @@ namespace MovieTestInLog.ViewModels
             set
             {
                 SetProperty(ref _searchText, value);
-              if(SearchInit)
+                if (SearchInit && value != null)
                     ExecuteSearchCommand();
-
+                IsBusy = false;
             }
         }
         private async void ExecuteSearchCommand()
         {
-           
-            ItemsMovie.Clear();
 
             if (!await StatusConnections.VerifyConnect())
             {
 
-                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." });
+                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." }); IsBusy = false;
                 return;
             }
             var itemsInfiniteSearch = new InfiniteScrollCollection<MoviesModel>
@@ -114,13 +126,16 @@ namespace MovieTestInLog.ViewModels
             };
             if (string.IsNullOrEmpty(SearchText))
             {
-               await LoadAsync();
+                await LoadAsync();
                 return;
             }
+            IsBusy = true;
+            CountPages = 1;
             MovieSearchModel movies = await HubService.GetSearchMovieAsync(SearchText, CountPages.ToString());
+            IsBusy = false;
             if (movies == null) return;
 
-            
+
 
             if (CountPages == 1)
                 ItemsMovie.Clear();
@@ -130,7 +145,7 @@ namespace MovieTestInLog.ViewModels
 
                 ItemsMovie.Add(item);
             }
-            OnPropertyChanged(nameof(ItemsMovie));
+            OnPropertyChanged(nameof(ItemsMovie)); IsBusy = false;
         }
 
     }

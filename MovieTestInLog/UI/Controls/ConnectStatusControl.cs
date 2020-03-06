@@ -10,14 +10,13 @@ namespace MovieTestInLog.UI.Controls
 {
    public class ConnectStatusControl
     {
-        IConnectivity connectivity { get; }
+        
         public async Task<bool> VerifyConnect()
         {
             try
             {
                 var current = Connectivity.NetworkAccess;
                 
-                if (connectivity.IsConnected && await connectivity.IsRemoteReachable(Constants.ApplicationURL, 5))
                     if (current == NetworkAccess.Internet)
                         return true;
             }

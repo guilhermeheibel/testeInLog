@@ -8,33 +8,89 @@
                mc:Ignorable="d"
              x:Class="MovieTestInLog.Views.MoviesDetailPage">
     <Grid>
-        <StackLayout HorizontalOptions="FillAndExpand" 
-                 VerticalOptions="FillAndExpand">
-        <ffimageloading:CachedImage DownsampleToViewSize="False"
-                                            Source="{Binding MovieDetail.poster_path}"
+    <ScrollView>
+        
+            <StackLayout HorizontalOptions="FillAndExpand" 
+                         VerticalOptions="Start" 
+                         Spacing="0" 
+                         Margin="0,0,0,15"
+                         >
+            <ffimageloading:CachedImage DownsampleToViewSize="False"
+                                            Source="{Binding MovieDetail.backdrop_path}"
                                             HorizontalOptions="FillAndExpand"
                                             VerticalOptions="FillAndExpand"
-                                           />
-        <Label Text="{Binding MovieDetail.genres}" FontSize="13"/>
-        <Label Text="{Binding MovieDetail.title}" FontSize="13"/>
-        <Label Text="{Binding MovieDetail.overview}" FontSize="13"/>
-        <Label Text="{Binding MovieDetail.vote_average}" FontSize="13"/>
-        <Label Text="{Binding MovieDetail.runtime}" FontSize="13"/>
-        <Label Text="{Binding MovieDetail.release_date}" FontSize="13"/>
-        <Label Text="{Binding MovieDetail.budget}" FontSize="13"/>
-        <Label Text="{Binding MovieDetail.revenue}" FontSize="13"/>
-        
-    </StackLayout>
+                                            Aspect="AspectFill"
+                                        HeightRequest="200"
+                                        MinimumWidthRequest="200"/>
 
-        <Grid Padding="6" IsVisible="{Binding IsBusy}">
-            <Grid.Triggers>
-                <Trigger TargetType="Grid" Property="IsVisible" Value="False">
-                    <Setter Property="HeightRequest" Value="0" />
-                </Trigger>
-            </Grid.Triggers>
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
+                <StackLayout Margin="15,15,15,0" 
+                             Spacing="0" 
+                             HorizontalOptions="Start" 
+                             VerticalOptions="Start">
+                    <Label VerticalOptions="Start" Text="{Binding MovieDetail.title}" FontSize="17" TextColor="Black"/>
+                    <Label VerticalOptions="Start" Text="{Binding MovieDetail.overview}" FontSize="13"  TextColor="Black"/>
+                    <Label VerticalOptions="Start" Text="{Binding MovieDetail.media}" FontSize="13" TextColor="Red"/>
+                    <Label Text="{Binding MovieDetail.tempo}" FontSize="13"/>
+                </StackLayout>
+                <StackLayout Margin="15,0,15,0" 
+                             Orientation="Horizontal"  
+                             Spacing="0" 
+                             HorizontalOptions="FillAndExpand" 
+                             VerticalOptions="Start">
+                    
+                    <StackLayout  Spacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                        <Label Text="{Binding MovieDetail.dataLancamento}" FontSize="13"/>
+                        <Label Text="{Binding MovieDetail.despesas}" FontSize="13"/>
+                        <Label Text="{Binding MovieDetail.receita}" FontSize="13"/>
+                    </StackLayout>
+                    <StackLayout Spacing="0" HorizontalOptions="End" VerticalOptions="Start" HeightRequest="150" >
+                        <Label Text="Gêneros" FontSize="17" TextColor="Red" HorizontalOptions="Center"/>
+                        <ListView x:Name="ItemsListView"
+                                  ItemsSource="{Binding Genre}"
+                                  VerticalOptions="Start"
+                                  HorizontalOptions="Center"
+                                  SeparatorVisibility="Default"
+                                  SeparatorColor="White"
+                                  WidthRequest="150"
+                                  Margin="0,0,0,15"
+                                  BackgroundColor="#252525"
+                                  HasUnevenRows="True">
+                            <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Spacing="0" 
+                                                 Orientation="Horizontal" 
+                                                 HorizontalOptions="Center" 
+                                                 VerticalOptions="Center">
+                                    <Label Text="{Binding name}" 
+                                           FontSize="11" 
+                                           TextColor="White" 
+                                           VerticalTextAlignment="Center" 
+                                           HorizontalTextAlignment="Center" 
+                                           VerticalOptions="Center" 
+                                           HorizontalOptions="FillAndExpand" 
+                                           Margin="15,2.5"/>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+     
+     
+  
+    </ScrollView>
+    <Grid Padding="6" IsVisible="{Binding IsBusy}">
+        <Grid.Triggers>
+            <Trigger TargetType="Grid" Property="IsVisible" Value="False">
+                <Setter Property="HeightRequest" Value="0" />
+            </Trigger>
+        </Grid.Triggers>
+        <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
                                        Color="#2196F3" VerticalOptions="Center" 
                                        HorizontalOptions="Center"/>
-        </Grid>
+    </Grid>  
     </Grid>
 </base:BasePage>

@@ -27,8 +27,7 @@ namespace MovieTestInLog.UI.Controls
                 if (ItemTappedCommand == null)
                     return;
                 try
-                {/* IsEnabled = false;*/
-                    // if (ItemTappedCommand.CanExecute(e.SelectedItem))
+                {
                     ItemTappedCommand.Execute(e.CurrentSelection);
 
                 }

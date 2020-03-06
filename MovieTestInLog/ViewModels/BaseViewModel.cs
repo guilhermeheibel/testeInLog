@@ -44,9 +44,9 @@ namespace MovieTestInLog.ViewModels
         }
         public async Task ExecuteRefreshCommand()
         {
-            IsBusy = true;
+           
             await LoadAsync();
-            IsBusy = false;
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

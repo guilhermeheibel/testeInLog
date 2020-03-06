@@ -57,7 +57,13 @@ namespace MovieTestInLog.ViewModels
         {
             if (IsBusy)
                 return;
+            if (!await StatusConnections.VerifyConnect())
+            {
 
+                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." });
+                IsBusy = false;
+                return;
+            }
             IsBusy = true;
 
             try
@@ -89,18 +95,20 @@ namespace MovieTestInLog.ViewModels
 
         public override async Task LoadAsync()
         {
-            CountPages = 1;
-             SearchInit = true;
+            
+            SearchInit = true;
+            SearchText = null;
             IsBusy = true;
             ItemsMovie.Clear();
 
             if (!await StatusConnections.VerifyConnect())
             {
 
-                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." });
+                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão..." }); IsBusy = false;
                 return;
-            }
-            var moviesList = await HubService.GetMoviesAsync(1);
+            } CountPages = 1;
+           
+            var moviesList = await HubService.GetMoviesAsync(CountPages);
             foreach (var itemMovie in moviesList)
             {
                 itemMovie.poster_path = PathMoviesImage.PathConverter(itemMovie.id.ToString(), itemMovie.poster_path);
@@ -117,7 +125,7 @@ namespace MovieTestInLog.ViewModels
             set
             {
                 SetProperty(ref _searchText, value);
-                if (SearchInit)
+                if (SearchInit && value !=null)
                     ExecuteSearchCommand();
 
             }
@@ -125,28 +133,58 @@ namespace MovieTestInLog.ViewModels
         private async void ExecuteSearchCommand()
         {
 
-            ItemsMovie.Clear();
             if (!await StatusConnections.VerifyConnect())
             {
-                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." });
+
+                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." }); IsBusy = false;
                 return;
             }
+            var itemsInfiniteSearch = new InfiniteScrollCollection<MoviesModel>
+            {
+                OnLoadMore = async () =>
+                {
 
-            var movies = await HubService.GetSearchMovieAsync(SearchText, CountPages.ToString());
+                    IsBusy = true;
+                    CountPages++;
+                    if (CountPages == 1) ItemsMovie.Clear();
+                    var moviesList = await HubService.GetSearchMovieAsync(SearchText, CountPages.ToString());
+                    if (moviesList == null) return new InfiniteScrollCollection<MoviesModel>();
+
+                    foreach (var itemMovie in moviesList.results)
+                    {
+                        itemMovie.poster_path = PathMoviesImage.PathConverter(itemMovie.id.ToString(), itemMovie.poster_path);
+
+                        ItemsMovie.Add(itemMovie);
+                    }
+                    IsBusy = false;
+                    return moviesList.results;
+                }
+            };
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                await LoadAsync();
+                return;
+            }
+            IsBusy = true;
+            CountPages = 1;
+            MovieSearchModel movies = await HubService.GetSearchMovieAsync(SearchText, CountPages.ToString());
+            IsBusy = false;
+            if (movies == null) return;
+
+
 
             if (CountPages == 1)
                 ItemsMovie.Clear();
-            foreach (var itemMovie in movies.results)
+            foreach (var item in movies.results)
             {
-                itemMovie.poster_path = PathMoviesImage.PathConverter(itemMovie.id.ToString(), itemMovie.poster_path);
+                item.poster_path = PathMoviesImage.PathConverter(item.id.ToString(), item.poster_path);
 
-                ItemsMovie.Add(itemMovie
-                    );
+                ItemsMovie.Add(item);
             }
-            OnPropertyChanged(nameof(ItemsMovie));
+            OnPropertyChanged(nameof(ItemsMovie)); IsBusy = false;
         }
 
-       public async Task ItemsTresholdReached()
+        public async Task ItemsTresholdReached()
         {
             if (IsBusy)
                 return;

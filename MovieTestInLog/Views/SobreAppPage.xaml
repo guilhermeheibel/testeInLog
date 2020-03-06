@@ -8,10 +8,17 @@
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
              x:Class="MovieTestInLog.Views.SobreAppPage">
    
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
+        <StackLayout Padding="25">
+        <Frame CornerRadius="15" BackgroundColor="#252525" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+            <Label Text="{Binding Sobreoapp}"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+                HorizontalOptions="CenterAndExpand" 
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"
+               TextColor="White"
+               FontSize="17"
+               Margin="15"/>
+        </Frame>
+    </StackLayout>
     
 </base:BasePage>
