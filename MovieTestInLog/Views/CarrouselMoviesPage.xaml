@@ -5,41 +5,48 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:base="clr-namespace:MovieTestInLog.Views;assembly=MovieTestInLog"
                  mc:Ignorable="d"
-                 xmlns:controls="clr-namespace:MovieTestInLog.UI.Controls"
                  xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
-                 xmlns:extended="clr-namespace:Xamarin.Forms.Extended;assembly=Xamarin.Forms.Extended.InfiniteScrolling"
                  Title="{Binding Title}"
                  x:Class="MovieTestInLog.Views.CarrouselMoviesPage">
     <StackLayout>
         <Frame BackgroundColor="#252525">
-            <Frame BackgroundColor="#FFFFFF" CornerRadius="15" Padding="0">
-                <StackLayout Orientation="Horizontal" Spacing="0">
-                    <Entry Text="{Binding SearchText}" PlaceholderColor="#D5D5D5" Placeholder="Procurar filme..." HorizontalOptions="FillAndExpand" Margin="5,0" />
-                    <Image Source="ic_launcher.png" WidthRequest="27" HorizontalOptions="End"/>
+            <Frame BackgroundColor="#FFFFFF" 
+                   CornerRadius="15"
+                   Padding="0">
+                <StackLayout Orientation="Horizontal" 
+                             Spacing="0">
+                    <Entry Text="{Binding SearchText}" 
+                           PlaceholderColor="#D5D5D5" 
+                           Placeholder="Procurar filme..." 
+                           HorizontalOptions="FillAndExpand" 
+                           Margin="5,0" />
+                    <Image Source="ic_launcher.png" 
+                           WidthRequest="27" 
+                           HorizontalOptions="End"/>
                 </StackLayout>
             </Frame>
         </Frame>
         <RefreshView Command="{Binding RefreshItemsCommand}"
                      IsRefreshing="{Binding IsRefreshing}">
-            <controls:CollectionViewMainControl x:Name="ItemsListView"
-                                                ItemsSource="{Binding ItemsMovie}"
-                                                VerticalOptions="FillAndExpand"
-                                                SelectionMode="Single"
-                                                SelectedItem="{Binding SelectedMovie, Mode=TwoWay}"
-                                                SelectionChangedCommand="{Binding ShowMovieDetailCommand}"
-                                                RemainingItemsThresholdReachedCommand="{Binding ItemTresholdReachedCommand}"
-                                                RemainingItemsThreshold="{Binding CountPages}">
+            <CollectionView x:Name="ItemsListView"
+                            ItemsSource="{Binding ItemsMovie}"
+                            VerticalOptions="FillAndExpand"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedMovie, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding ShowMovieDetailCommand}"
+                            RemainingItemsThresholdReachedCommand="{Binding ItemTresholdReachedCommand}"
+                            RemainingItemsThreshold="{Binding CountPages}">
 
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Horizontal" 
                                      Span="2"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.EmptyView>
-                    
+
                     <Label Text="Sem itens para exibir :("
                            HorizontalOptions="Center" 
                            VerticalOptions="Center"/>
-                    
+
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -76,7 +83,7 @@
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </controls:CollectionViewMainControl>
+            </CollectionView>
         </RefreshView>
     </StackLayout>
 </base:BasePage>

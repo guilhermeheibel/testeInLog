@@ -38,7 +38,7 @@ namespace MovieTestInLog.ViewModels
             get { return _countPages; }
             set { SetProperty(ref _countPages, value); }
         }
-       
+
         public CarrouselMoviesViewModel()
         {
             Title = "Movies List";
@@ -86,16 +86,16 @@ namespace MovieTestInLog.ViewModels
                 IsBusy = false;
             }
         }
-    
-    private async Task ExecuteMovieDetail()
+
+        private async Task ExecuteMovieDetail()
         {
             await PushAsync<MoviesDetailViewModel>(SelectedMovie);
         }
-      
+
 
         public override async Task LoadAsync()
         {
-            
+
             SearchInit = true;
             SearchText = null;
             IsBusy = true;
@@ -106,8 +106,9 @@ namespace MovieTestInLog.ViewModels
 
                 ItemsMovie.Add(new MoviesModel() { title = "Sem conexão..." }); IsBusy = false;
                 return;
-            } CountPages = 1;
-           
+            }
+            CountPages = 1;
+
             var moviesList = await HubService.GetMoviesAsync(CountPages);
             foreach (var itemMovie in moviesList)
             {
@@ -125,7 +126,7 @@ namespace MovieTestInLog.ViewModels
             set
             {
                 SetProperty(ref _searchText, value);
-                if (SearchInit && value !=null)
+                if (SearchInit && value != null)
                     ExecuteSearchCommand();
 
             }
@@ -203,8 +204,8 @@ namespace MovieTestInLog.ViewModels
                     ItemsMovie.Add(itemMovie);
                 }
                 Debug.WriteLine($"{ItemsMovie.Count()} {ItemsMovie.Count} ");
-               
-               }
+
+            }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
