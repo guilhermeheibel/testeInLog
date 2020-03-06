@@ -21,58 +21,62 @@
         </Frame>
         <RefreshView Command="{Binding RefreshItemsCommand}"
                      IsRefreshing="{Binding IsRefreshing}">
-            <CollectionView x:Name="ItemsListView"
-                        ItemsSource="{Binding ItemsMovie}"
-                        VerticalOptions="FillAndExpand"
-                   
-                         RemainingItemsThresholdReachedCommand="{Binding ItemTresholdReachedCommand}"
-                        RemainingItemsThreshold="{Binding CountPages}">
+            <controls:CollectionViewMainControl x:Name="ItemsListView"
+                                                ItemsSource="{Binding ItemsMovie}"
+                                                VerticalOptions="FillAndExpand"
+                                                SelectionMode="Single"
+                                                SelectedItem="{Binding SelectedMovie, Mode=TwoWay}"
+                                                SelectionChangedCommand="{Binding ShowMovieDetailCommand}"
+                                                RemainingItemsThresholdReachedCommand="{Binding ItemTresholdReachedCommand}"
+                                                RemainingItemsThreshold="{Binding CountPages}">
 
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Horizontal" Span="2"/>
+                    <GridItemsLayout Orientation="Horizontal" 
+                                     Span="2"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.EmptyView>
-                    <Label Text="Sem itens para exibir :(" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    
+                    <Label Text="Sem itens para exibir :("
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center"/>
+                    
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
                             <StackLayout Spacing="0" 
-                                     Orientation="Vertical" 
-                                     HorizontalOptions="FillAndExpand" 
-                                     VerticalOptions="FillAndExpand"
-                                 HeightRequest="200">
+                                         Orientation="Vertical" 
+                                         HorizontalOptions="FillAndExpand" 
+                                         VerticalOptions="FillAndExpand"
+                                         HeightRequest="200">
 
                                 <ffimageloading:CachedImage DownsampleToViewSize="False"
-                                                    BackgroundColor="Black"
-                                                        Source="{Binding poster_path}"
-                                                        HorizontalOptions="FillAndExpand"
-                                                        VerticalOptions="FillAndExpand"
-                                                        Margin="0"/>
+                                                            BackgroundColor="Black"
+                                                            Source="{Binding poster_path}"
+                                                            HorizontalOptions="FillAndExpand"
+                                                            VerticalOptions="FillAndExpand"
+                                                            Margin="0"/>
                                 <StackLayout Spacing="0" 
-                                     VerticalOptions="Start" 
-                                     HorizontalOptions="Center"
-                                     WidthRequest="150"
-                                     Margin="15">
+                                             VerticalOptions="Start" 
+                                             HorizontalOptions="Center"
+                                             WidthRequest="150"
+                                             Margin="15">
                                     <Label Text="{Binding title}" 
-                                   LineBreakMode="TailTruncation" 
-                                   TextColor="Black"
-                                   Style="{DynamicResource ListItemTextStyle}" 
-                                   FontSize="17" />
+                                           LineBreakMode="TailTruncation" 
+                                           TextColor="Black"
+                                           FontSize="17" />
                                     <Label Text="{Binding Pontuacao}" 
-                                        LineBreakMode="NoWrap" 
-                                        Style="{DynamicResource ListItemTextStyle}" 
-                                        FontSize="13" />
+                                           LineBreakMode="NoWrap" 
+                                           FontSize="13" />
                                     <Label Text="{Binding DataLancamento}" 
-                                        LineBreakMode="NoWrap" 
-                                        Style="{DynamicResource ListItemTextStyle}" 
-                                        FontSize="13" />
+                                           LineBreakMode="NoWrap" 
+                                           FontSize="13" />
                                 </StackLayout>
                             </StackLayout>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>
+            </controls:CollectionViewMainControl>
         </RefreshView>
     </StackLayout>
 </base:BasePage>

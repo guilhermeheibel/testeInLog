@@ -19,8 +19,8 @@ namespace MovieTestInLog.Models
         public string title { get; set; }
         public float vote_average { get; set; }
         public string Pontuacao { get { return "Nota: " + vote_average; } }
-        public string DataLancamento { get { return "Lançamento: " + release_date.ToString("dd/MM/yyyy"); } }
+        public string DataLancamento { get { return "Lançamento: " + release_date?.ToString("dd/MM/yyyy"); } }
         public string overview { get; set; }
-        public DateTime release_date { get; set; }
+        public DateTimeOffset? release_date { get; set; }
     }
 }

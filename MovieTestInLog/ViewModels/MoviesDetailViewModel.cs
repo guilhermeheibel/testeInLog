@@ -1,8 +1,5 @@
 ﻿using MovieTestInLog.Models;
 using MovieTestInLog.UI.Utils;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MovieTestInLog.ViewModels
@@ -17,12 +14,13 @@ namespace MovieTestInLog.ViewModels
         }
         public override async Task LoadAsync()
         {
+            IsBusy = true;
             MovieDetail = await HubService.GetMoviesDetailAsync(SelectedMovieDetail.id);
 
             MovieDetail.poster_path  = PathMoviesImage.PathConverter(SelectedMovieDetail.id.ToString(), MovieDetail.poster_path);
 
             OnPropertyChanged(nameof(MovieDetail));
-
+            IsBusy = false;
         }
     }
 }

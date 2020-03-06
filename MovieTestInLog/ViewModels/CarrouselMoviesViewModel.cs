@@ -15,7 +15,12 @@ namespace MovieTestInLog.ViewModels
     public class CarrouselMoviesViewModel : BaseViewModel
     {
         public ObservableCollection<MoviesModel> ItemsMovie { get; }
-       
+        private MoviesModel _selectedMovie;
+        public MoviesModel SelectedMovie
+        {
+            get { return _selectedMovie; }
+            set { SetProperty(ref _selectedMovie, value); }
+        }
         public ICommand ShowMovieDetailCommand { get; }
         public ICommand ItemTresholdReachedCommand { get; }
 
@@ -27,18 +32,20 @@ namespace MovieTestInLog.ViewModels
             get { return _isRefreshing; }
             set { SetProperty(ref _isRefreshing, value); }
         }
-
+        bool SearchInit = false;
         public int CountPages
         {
             get { return _countPages; }
             set { SetProperty(ref _countPages, value); }
         }
+       
         public CarrouselMoviesViewModel()
         {
             Title = "Movies List";
+            ;
             ItemsMovie = new InfiniteScrollCollection<MoviesModel>();
             ItemTresholdReachedCommand = new Command(async () => await ItemsTresholdReached());
-            ShowMovieDetailCommand = new Command<MoviesModel>(async (x) => await ExecuteMovieDetail(x));
+            ShowMovieDetailCommand = new Command(async () => await ExecuteMovieDetail());
             RefreshItemsCommand = new Command(async () =>
             {
                 await ExecuteLoadItemsCommand();
@@ -74,15 +81,25 @@ namespace MovieTestInLog.ViewModels
             }
         }
     
-    private async Task ExecuteMovieDetail(MoviesModel movieSelected)
+    private async Task ExecuteMovieDetail()
         {
-            await PushAsync<MoviesDetailViewModel>(movieSelected);
+            await PushAsync<MoviesDetailViewModel>(SelectedMovie);
         }
+      
+
         public override async Task LoadAsync()
         {
-
+            CountPages = 1;
+             SearchInit = true;
             IsBusy = true;
             ItemsMovie.Clear();
+
+            if (!await StatusConnections.VerifyConnect())
+            {
+
+                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." });
+                return;
+            }
             var moviesList = await HubService.GetMoviesAsync(1);
             foreach (var itemMovie in moviesList)
             {
@@ -100,16 +117,21 @@ namespace MovieTestInLog.ViewModels
             set
             {
                 SetProperty(ref _searchText, value);
-                if (!string.IsNullOrEmpty(value))
+                if (SearchInit)
                     ExecuteSearchCommand();
 
             }
         }
         private async void ExecuteSearchCommand()
         {
-            CountPages = 1;
+
             ItemsMovie.Clear();
-           
+            if (!await StatusConnections.VerifyConnect())
+            {
+                ItemsMovie.Add(new MoviesModel() { title = "Sem conexão ativa com a internet..." });
+                return;
+            }
+
             var movies = await HubService.GetSearchMovieAsync(SearchText, CountPages.ToString());
 
             if (CountPages == 1)

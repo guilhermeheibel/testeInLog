@@ -10,12 +10,14 @@ using MovieTestInLog.Services;
 using System.Threading.Tasks;
 using MovieTestInLog.Abstractions;
 using MovieTestInLog.Views;
+using MovieTestInLog.UI.Controls;
 
 namespace MovieTestInLog.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-       
+        public Command RefreshCommandPush { get; }
+        public ConnectStatusControl StatusConnections = new ConnectStatusControl(); 
         bool isBusy = false;
         public bool IsBusy
         {
@@ -34,10 +36,19 @@ namespace MovieTestInLog.ViewModels
         public IHubServiceApi HubService;
         public BaseViewModel()
         {
+            RefreshCommandPush = new Command(async () => await ExecuteRefreshCommand());
+
             var masterBinding = Application.Current.MainPage as MainPage;
             if(masterBinding!=null)
             HubService = masterBinding.HubServiceMain;
         }
+        public async Task ExecuteRefreshCommand()
+        {
+            IsBusy = true;
+            await LoadAsync();
+            IsBusy = false;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {

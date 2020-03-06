@@ -7,13 +7,34 @@
             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
                mc:Ignorable="d"
              x:Class="MovieTestInLog.Views.MoviesDetailPage">
-    <StackLayout HorizontalOptions="FillAndExpand" 
+    <Grid>
+        <StackLayout HorizontalOptions="FillAndExpand" 
                  VerticalOptions="FillAndExpand">
         <ffimageloading:CachedImage DownsampleToViewSize="False"
                                             Source="{Binding MovieDetail.poster_path}"
                                             HorizontalOptions="FillAndExpand"
                                             VerticalOptions="FillAndExpand"
-                                           >
-        </ffimageloading:CachedImage>
+                                           />
+        <Label Text="{Binding MovieDetail.genres}" FontSize="13"/>
+        <Label Text="{Binding MovieDetail.title}" FontSize="13"/>
+        <Label Text="{Binding MovieDetail.overview}" FontSize="13"/>
+        <Label Text="{Binding MovieDetail.vote_average}" FontSize="13"/>
+        <Label Text="{Binding MovieDetail.runtime}" FontSize="13"/>
+        <Label Text="{Binding MovieDetail.release_date}" FontSize="13"/>
+        <Label Text="{Binding MovieDetail.budget}" FontSize="13"/>
+        <Label Text="{Binding MovieDetail.revenue}" FontSize="13"/>
+        
     </StackLayout>
+
+        <Grid Padding="6" IsVisible="{Binding IsBusy}">
+            <Grid.Triggers>
+                <Trigger TargetType="Grid" Property="IsVisible" Value="False">
+                    <Setter Property="HeightRequest" Value="0" />
+                </Trigger>
+            </Grid.Triggers>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
+                                       Color="#2196F3" VerticalOptions="Center" 
+                                       HorizontalOptions="Center"/>
+        </Grid>
+    </Grid>
 </base:BasePage>

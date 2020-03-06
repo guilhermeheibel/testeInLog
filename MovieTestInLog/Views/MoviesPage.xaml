@@ -26,7 +26,9 @@
                                         SeparatorColor="Black"
                                         SeparatorVisibility="Default"
                                         HasUnevenRows="true"
-                                        >
+                                      RefreshCommand="{Binding RefreshCommandPush}"
+                                      IsRefreshing="{Binding IsBusy}"
+                                        IsPullToRefreshEnabled="True" >
            
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -61,16 +63,7 @@
             </ListView.ItemTemplate>
            
             <controls:ListViewMainControl.Footer>
-                <Grid Padding="6" IsVisible="{Binding IsBusy}">
-                    <Grid.Triggers>
-                        <Trigger TargetType="Grid" Property="IsVisible" Value="False">
-                            <Setter Property="HeightRequest" Value="0" />
-                        </Trigger>
-                    </Grid.Triggers>
-                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" 
-                                       Color="#2196F3" VerticalOptions="Center" 
-                                       HorizontalOptions="Center"/>
-                </Grid>
+                
             </controls:ListViewMainControl.Footer>
             <controls:ListViewMainControl.Behaviors>
                 <extended:InfiniteScrollBehavior IsLoadingMore="{Binding IsBusy}" />

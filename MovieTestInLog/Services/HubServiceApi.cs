@@ -1,13 +1,16 @@
 ﻿using MovieTestInLog.Abstractions;
 using MovieTestInLog.Models;
+using MovieTestInLog.Views;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace MovieTestInLog.Services
 {
@@ -31,14 +34,21 @@ namespace MovieTestInLog.Services
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                throw new UnauthorizedAccessException();
+                if (Application.Current.MainPage is MasterDetailPage master)
+                {
+                    if (master.Detail.Navigation.NavigationStack.LastOrDefault() is BasePage ActualPage) { await ActualPage.DisplayAlert("Aviso", "Não foi possivel autenticar sua chave. Verifiue o token API e tente novamente.","OK"); }
+                }
             }
             else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                if (Application.Current.MainPage is MasterDetailPage master)
+                {
+                    if (master.Detail.Navigation.NavigationStack.LastOrDefault() is BasePage ActualPage) { await ActualPage.DisplayAlert("Aviso", "Não foi possivel buscar as informações no servidor. Verifique sua conexão e tente novamente.", "OK"); }
+                }
+              
             }
 
-
+            return null;
 
         }
         public async Task<MoviesDetailModel> GetMoviesDetailAsync(int movie_id)
@@ -53,15 +63,21 @@ namespace MovieTestInLog.Services
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                throw new UnauthorizedAccessException();
+                if (Application.Current.MainPage is MasterDetailPage master)
+                {
+                    if (master.Detail.Navigation.NavigationStack.LastOrDefault() is BasePage ActualPage) { await ActualPage.DisplayAlert("Aviso", "Não foi possivel autenticar sua chave. Verifiue o token API e tente novamente.", "OK"); }
+                }
             }
             else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                if (Application.Current.MainPage is MasterDetailPage master)
+                {
+                    if (master.Detail.Navigation.NavigationStack.LastOrDefault() is BasePage ActualPage) { await ActualPage.DisplayAlert("Aviso", "Não foi possivel buscar as informações no servidor. Verifique sua conexão e tente novamente.", "OK"); }
+                }
+
             }
 
-
-
+            return null;
         }
         public async Task<MovieSearchModel> GetSearchMovieAsync(string searchText, string page)
         {
@@ -75,15 +91,21 @@ namespace MovieTestInLog.Services
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                throw new UnauthorizedAccessException();
+                if (Application.Current.MainPage is MasterDetailPage master)
+                {
+                    if (master.Detail.Navigation.NavigationStack.LastOrDefault() is BasePage ActualPage) { await ActualPage.DisplayAlert("Aviso", "Não foi possivel autenticar sua chave. Verifiue o token API e tente novamente.", "OK"); }
+                }
             }
             else
             {
-                throw new Exception(await response.Content.ReadAsStringAsync());
+                if (Application.Current.MainPage is MasterDetailPage master)
+                {
+                    if (master.Detail.Navigation.NavigationStack.LastOrDefault() is BasePage ActualPage) { await ActualPage.DisplayAlert("Aviso", "Não foi possivel buscar as informações no servidor. Verifique sua conexão e tente novamente.", "OK"); }
+                }
+
             }
 
-
-
+            return null;
         }
 
     }
